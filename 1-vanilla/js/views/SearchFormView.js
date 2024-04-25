@@ -22,13 +22,17 @@ export default class SearchFormView extends View {
 
   bindEvents() {
     on(this.inputElement, "keyup", () => this.handleKeyUp());
-    on(this.element, "submit", (event) => this.handleSubmit(event));
+    this.on("submit", (event) => this.handleSubmit(event));
+    on(this.resetElement, "click", () => this.handleReset());
   }
 
   handleKeyUp() {
-    console.log(tag, "handleKeyUp", this.inputElement.value);
     const { value } = this.inputElement; // destructuring 으로 value 만 사용
     this.showResetButton(value.length > 0);
+
+    if (value.length <= 0) {
+      this.handleReset();
+    }
   }
 
   handleSubmit(event) {
@@ -36,5 +40,10 @@ export default class SearchFormView extends View {
     console.log(tag, "handleSubmit");
     const { value } = this.inputElement;
     this.emit("@submit", { value });
+  }
+
+  handleReset() {
+    console.log(tag, "handleReset");
+    this.emit("@reset");
   }
 }
